@@ -7,10 +7,13 @@ public:
     float getAccX();
     float getAccY();
     float getAccZ();
-    void getPosition();
-
+    //tezi dva methoda ne se polzvat i nqmat implementaciq. ako nqma da se izpolzvat da gi mahnem. 
+    float getAngleRoll();
+    float getAnglePitch();
+    //2 
+    void readSignal(*AngleX,*AngleY,*AngleZ);
 private:
-    
+    float AngleRoll, AnglePitch;
     float AccX, AccY, AccZ;
     float RateRoll, RatePitch, RateYaw;
 };

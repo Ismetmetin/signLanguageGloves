@@ -1,6 +1,7 @@
 #include "Position.h"
 #include <Wire.h>
 
+
 void Position::gyro_signals() {
     Wire.beginTransmission(0x68);
     Wire.write(0x1A);
@@ -16,7 +17,6 @@ void Position::gyro_signals() {
     Wire.write(0x3B);
     Wire.endTransmission();
     Wire.requestFrom(0x68, 8);
-
     int16_t AccXLSB = Wire.read() << 8 | Wire.read();
     int16_t AccYLSB = Wire.read() << 8 | Wire.read();
     int16_t AccZLSB = Wire.read() << 8 | Wire.read();
@@ -31,49 +31,29 @@ void Position::gyro_signals() {
     Wire.endTransmission();
 
     Wire.requestFrom(0x68, 6);
-
-    int16_t GyroX = Wire.read() << 8 | Wire.read();
-    int16_t GyroY = Wire.read() << 8 | Wire.read();
-    int16_t GyroZ = Wire.read() << 8 | Wire.read();
-
-    RateRoll = (float)GyroX / 65.5;
-    RatePitch = (float)GyroY / 65.5;
-    RateYaw = (float)GyroZ / 65.5;
-
-    AccX = (float)AccXLSB / 4096;
-    AccY = (float)AccYLSB / 4096;
-    AccZ = (float)AccZLSB / 4096;
+   
+    AccX = (float)AccXLSB / 5400;
+    AccY = (float)AccYLSB / 5400;
+    AccZ = (float)AccZLSB / 5400;
 
   
 }
 
 float Position::getAccX() {
-    return AccX;
+    return AccX *180;
 }
 
 float Position::getAccY() {
-    return AccY;
+    return AccY*180;
 }
 
 float Position::getAccZ() {
-    return AccZ;
+    return AccZ*180;
 }
-
-/*void Position::getPosition() {
-    if (AccZ < 160) {
-        thePosition = "normalna";
-    }
-    if (AccX < -15 && AccX > 30 && AccY >-180 && AccY <= -120 && AccZ > 110 && AccZ < 150) {
-        thePosition = "zdravei";
-    }
-    if (AccX < -15 && AccX > 30 && AccY >= 150 && AccY <= 190 && AccZ > 50 && AccZ < 120) {
-        thePosition = "zdraveiAmaNaobratno";
-    }
-    if (AccX < -15 && AccX > 30 && AccY >= 150 && AccY <= 190 && AccZ > 50 && AccZ < 120) {
-        thePosition = "normalna";
-    }
-   
-    
-    return thePosition;
+//2
+void Position:: readSignal(*angleX,*angleY,*angleZ){
+gyro_signals();
+*angleX = getAccX();
+*angleY = getAccY();
+*angleZ = getAccZ();
 }
-*/
